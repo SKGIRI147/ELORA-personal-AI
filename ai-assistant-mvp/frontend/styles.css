@@ -1,0 +1,168 @@
+:root{
+  --bg1:#0b1020;
+  --fg:#e8ecff;
+  --muted:#aab7d9;
+  --accent:#66d1ff;
+  --accent2:#7bffb2;
+  --danger:#ff7b7b;
+  --edge: 2px;
+  --edge-opacity: .9;
+}
+
+*{box-sizing:border-box}
+html,body{
+  margin:0;height:100%;color:var(--fg);
+  background:
+    radial-gradient(1200px 800px at 10% -10%, #223056 0%, #0b1020 45%) fixed,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 1 L59 30 L30 59 L1 30 Z' fill='none' stroke='%2315233f' stroke-opacity='0.35' stroke-width='1'/%3E%3C/svg%3E") center/140px repeat fixed,
+    linear-gradient(180deg, rgba(255,255,255,.02), transparent) fixed;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5
+}
+
+/* global info bar */
+.global-status{
+  position:sticky; top:0; z-index:9999;
+  background:rgba(255, 71, 87, .1);
+  border-bottom:1px solid rgba(255,255,255,.2);
+  padding:6px 12px; font-weight:700; color:#ffdede;
+  backdrop-filter:blur(8px)
+}
+.secure-tip{margin:8px 0 0; color:#ffdede}
+
+/* header */
+.hero{padding:20px;background:linear-gradient(180deg,rgba(255,255,255,.04),transparent)}
+.topbar{
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:center;
+  padding:8px 20px;
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,.12)
+}
+
+/* ELORA center, cursive, color-shift */
+.brand-elora{
+  position:relative;
+  font-family:"Brush Script MT","Pacifico",cursive;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  font-size:2.6rem; line-height:1;
+  background:linear-gradient(90deg,#ff7b7b,#ffb86b,#7bffb2,#66d1ff,#caa7ff,#ff7b7b);
+  background-size:300% 100%;
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:colorShift 10s ease infinite, hueRoll 18s linear infinite;
+}
+@keyframes colorShift{ 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+@keyframes hueRoll{ to{ filter:hue-rotate(360deg) } }
+
+/* language text sticks to top-right */
+.locale-mini{ position:absolute; right:16px; top:12px; opacity:.9; font-size:.95rem }
+
+.container{max-width:980px;margin:0 auto;padding:20px;display:grid;gap:18px}
+
+.title-cursive{
+  font-family:"Brush Script MT","Pacifico",cursive;
+  text-transform:uppercase; letter-spacing:.6px
+}
+
+/* glass cards + thin rainbow edge */
+.card{
+  position:relative; border-radius:18px; padding:16px 16px 18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(10px) saturate(120%);
+  overflow:hidden;
+}
+.card.fx::before{
+  content:""; position:absolute; inset:0; border-radius:18px; padding:var(--edge);
+  background:conic-gradient(from 0deg,#ff7b7b,#ffb86b,#7bffb2,#66d1ff,#caa7ff,#ff7b7b);
+  background-size:200% 200%;
+  animation:borderSpin 12s linear infinite, colorShift 10s ease infinite;
+  opacity:var(--edge-opacity);
+  pointer-events:none; /* ensure clicks pass through */
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+}
+@keyframes borderSpin{to{transform:rotate(1turn)}}
+.card:hover{transform:translateY(-2px); transition:transform .25s ease}
+
+h1,h2{margin:.1rem 0 .6rem}
+h2{font-size:1.25rem}
+p{margin:.2rem 0 .6rem}
+.small{font-size:.9rem}
+.muted{color:var(--muted)}
+.centered-divider{text-align:center;margin:10px 0;opacity:.9}
+
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.subgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:800px){.grid,.subgrid{grid-template-columns:1fr}}
+
+label{display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+input,select,button{font:inherit}
+input,select{
+  background:#0e1430;border:1px solid rgba(255,255,255,.15);color:var(--fg);
+  padding:10px 12px;border-radius:12px;outline:none
+}
+input:focus,select:focus{border-color:var(--accent)}
+
+button{
+  background:linear-gradient(135deg,#5aa8ff,#79ffe3);
+  color:#061627;border:0;padding:10px 14px;border-radius:12px;
+  font-weight:800;cursor:pointer;transition:transform .12s ease
+}
+button:hover{transform:translateY(-1px)}
+button.secondary{
+  background:linear-gradient(135deg,#2c3358,#18203e);color:#d6e1ff;
+  border:1px solid rgba(255,255,255,.15)
+}
+button:disabled{opacity:.6;cursor:not-allowed}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:.3rem 0}
+
+.result{margin-top:.5rem;color:#bfe1ff;white-space:pre-line}
+.diag{font-size:.95rem;line-height:1.6;background:rgba(0,0,0,.15);
+  border-radius:12px;padding:.75rem 1rem}
+
+.perm-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.badge{padding:.15rem .5rem;border-radius:.6rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15)}
+
+.idcard{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-radius:16px;
+  background:linear-gradient(180deg,#0a0d16,#04060c);
+  border:1px solid rgba(255,255,255,.08)
+}
+.idcard .big{font-size:1.1rem;font-weight:800}
+
+.led{font-weight:800}
+.led.listening{color:#6ee7ff}
+.led.active{color:#93ff94}
+.led.idle{color:#bbb}
+
+/* Face camera area */
+.face-row{display:grid;grid-template-columns:360px 1fr;gap:14px;align-items:start}
+.video-wrap{position:relative}
+#cam{
+  width:100%;aspect-ratio:4/3;background:#000;border-radius:12px;
+  border:1px solid rgba(255,255,255,.1); box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)
+}
+.face-guide{
+  position:absolute;inset:12%;border-radius:16px;border:2px dashed rgba(255,255,255,.65);
+  pointer-events:none;display:flex;align-items:center;justify-content:center;
+  color:#e8ecff99;font-weight:900;text-shadow:0 1px 0 #0006;
+  text-transform:uppercase;letter-spacing:.6px
+}
+.face-col{display:flex;flex-direction:column;gap:8px}
+
+/* mic meter */
+.mic-meter{
+  width:200px;height:12px;border-radius:20px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.18); overflow:hidden
+}
+#mic-bar{height:100%;width:0%;background:linear-gradient(90deg,#7bffb2,#66d1ff);transition:width .08s linear}
+
+/* Decorative overlays never capture clicks */
+.card.fx::before, .hero::before, .hero::after, .bg-lines, .page-stripe { pointer-events: none !important; }

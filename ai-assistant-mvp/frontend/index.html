@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>ELORA — SIGN IN / REGISTER</title>
+  <meta name="theme-color" content="#0b1020" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="global-status" class="global-status" aria-live="polite"></div>
+
+  <header class="hero glass">
+    <nav class="topbar">
+      <div class="brand-elora" aria-label="ELORA">ELORA</div>
+      <div class="locale-mini" id="mini-lang-wrap">
+        <span id="mini-lang">LANGUAGE: —</span>
+      </div>
+    </nav>
+    <p>Create your account, unlock with face, and use always-on voice.</p>
+    <div class="secure-tip" id="secure-tip" hidden>
+      ⚠️ Use <b>http://127.0.0.1:5173</b> or <b>http://localhost:5173</b>. Camera/Mic only work on secure or local origins.
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- SIGN IN -->
+    <section class="card fx">
+      <h2 class="title-cursive">SIGN IN</h2>
+      <form id="signin-form" autocomplete="on">
+        <label>EMAIL
+          <input type="email" id="signin-email" name="email" autocomplete="username" required />
+        </label>
+        <label>PASSWORD
+          <input type="password" id="signin-password" name="current-password" autocomplete="current-password" required />
+        </label>
+        <button type="submit">SIGN IN</button>
+      </form>
+
+      <div class="centered-divider">— OR —</div>
+      <div id="googleSignInButton" style="display:flex; justify-content:center;"></div>
+      <div id="signin-result" class="result" aria-live="polite"></div>
+    </section>
+
+    <!-- REGISTER -->
+    <section class="card fx">
+      <h2 class="title-cursive">REGISTER</h2>
+      <form id="register-form" autocomplete="on">
+        <div class="grid">
+          <label>USER NAME
+            <input type="text" id="reg-username" name="username" autocomplete="username" required />
+          </label>
+          <label>FULL NAME
+            <input type="text" id="reg-fullname" name="full_name" autocomplete="name" />
+          </label>
+          <label>EMAIL (GMAIL SUPPORTED)
+            <input type="email" id="reg-email" name="email" autocomplete="email" required />
+          </label>
+          <label>PASSWORD
+            <input type="password" id="reg-password" name="new-password" autocomplete="new-password" required />
+          </label>
+          <label>AI AGENT NAME
+            <input type="text" id="reg-agent" name="agent_name" placeholder="ELORA" />
+          </label>
+          <label>WORK SCHEDULE (CRON OR TEXT)
+            <input type="text" id="reg-schedule" name="work_schedule" placeholder="24/7" />
+          </label>
+        </div>
+        <fieldset>
+          <legend>EMERGENCY ESCALATION (OPT-IN)</legend>
+          <label>
+            <input type="checkbox" id="reg-crisis-optin" />
+            ALLOW CONTACTING MY TRUSTED PERSON IF REPEATED CRISIS PHRASES ARE DETECTED.
+          </label>
+          <div class="grid">
+            <label>TRUSTED CONTACT NAME
+              <input type="text" id="reg-trusted-name" name="trusted_contact_name" />
+            </label>
+            <label>TRUSTED CONTACT PHONE (E.164)
+              <input type="tel" id="reg-trusted-phone" name="trusted_contact_phone" placeholder="+15551234567" />
+            </label>
+          </div>
+        </fieldset>
+        <button type="submit">CREATE ACCOUNT</button>
+      </form>
+      <div id="register-result" class="result" aria-live="polite"></div>
+    </section>
+
+    <!-- COUNTRY → STATE → LANGUAGE -->
+    <section class="card fx">
+      <h2 class="title-cursive">COUNTRY → STATE → LANGUAGE</h2>
+      <div class="grid">
+        <label>COUNTRY (TYPE OR PICK)
+          <input id="country-input" list="country-options" placeholder="India / United States / Japan …" />
+          <datalist id="country-options">
+            <option>India</option><option>United States</option><option>United Kingdom</option>
+            <option>China</option><option>Japan</option><option>France</option>
+            <option>Spain</option><option>Saudi Arabia</option><option>Other</option>
+          </datalist>
+        </label>
+
+        <label>STATE / REGION
+          <input id="state" type="text" placeholder="ODISHA / MAHARASHTRA / TOKYO …" />
+        </label>
+
+        <label>LANGUAGE (TYPE BCP-47 CODE OR PICK)
+          <input id="language-input" list="lang-options" placeholder="or-IN / en-IN / mr-IN / zh-CN / ja-JP …" />
+          <datalist id="lang-options">
+            <option value="or-IN">Odia (India)</option><option value="hi-IN">Hindi (India)</option>
+            <option value="en-IN">English (India)</option><option value="mr-IN">Marathi (India)</option>
+            <option value="bn-IN">Bengali (India)</option><option value="ta-IN">Tamil (India)</option>
+            <option value="te-IN">Telugu (India)</option><option value="kn-IN">Kannada (India)</option>
+            <option value="gu-IN">Gujarati (India)</option><option value="pa-IN">Punjabi (India)</option>
+            <option value="ur-IN">Urdu (India)</option><option value="ml-IN">Malayalam (India)</option>
+            <option value="as-IN">Assamese (India)</option><option value="en-US">English (US)</option>
+            <option value="es-US">Spanish (US)</option><option value="en-GB">English (UK)</option>
+            <option value="zh-CN">Chinese (Mandarin, CN)</option><option value="ja-JP">Japanese</option>
+            <option value="fr-FR">French</option><option value="es-ES">Spanish (ES)</option>
+            <option value="ar-SA">Arabic (SA)</option>
+          </datalist>
+        </label>
+      </div>
+      <div class="controls">
+        <button id="lang-apply" type="button">APPLY LANGUAGE</button>
+        <button id="lang-test" type="button" class="secondary">TEST SPEECH</button>
+        <div id="lang-status" class="result"></div>
+      </div>
+    </section>
+
+    <!-- PERMISSION BADGES -->
+    <section class="card fx">
+      <h2 class="title-cursive">DEVICE PERMISSIONS</h2>
+      <div class="perm-badges">
+        Camera: <span id="cam-perm" class="badge">unknown</span> •
+        Microphone: <span id="mic-perm" class="badge">unknown</span>
+        <button id="perm-refresh" type="button" class="secondary">REFRESH</button>
+      </div>
+      <p class="muted small">If denied, click the lock icon near the address bar → set Camera/Microphone to <b>Allow</b>, then Reload.</p>
+    </section>
+
+    <!-- FACE UNLOCK FIRST -->
+    <section class="card fx">
+      <h2 class="title-cursive">FACE UNLOCK (OWNER FIRST)</h2>
+      <p class="muted small">
+        STEP 1 → START CAMERA. STEP 2 → ENROLL YOUR FACE (HOLD STEADY, GOOD LIGHT).
+        STEP 3 → UNLOCK. VOICE STAYS DISABLED UNTIL UNLOCKED.
+      </p>
+
+      <div class="grid">
+        <label>CAMERA
+          <select id="camera-select"></select>
+        </label>
+        <div class="controls">
+          <button id="dev-refresh" type="button" class="secondary">REFRESH DEVICES</button>
+          <button id="cam-permission" type="button" class="secondary">ALLOW CAMERA</button>
+        </div>
+      </div>
+
+      <div class="face-row">
+        <div class="video-wrap">
+          <video id="cam" autoplay playsinline muted></video>
+          <div class="face-guide">ALIGN YOUR FACE HERE</div>
+        </div>
+        <canvas id="face-canvas" width="320" height="240" hidden></canvas>
+        <div class="face-col">
+          <div class="controls">
+            <button id="cam-start" type="button">START CAMERA</button>
+            <button id="cam-stop" type="button" class="secondary">STOP</button>
+          </div>
+          <div class="controls">
+            <button id="face-enroll" type="button">ENROLL FACE</button>
+            <button id="face-clear" type="button" class="secondary">CLEAR FACE</button>
+          </div>
+          <div class="controls">
+            <button id="face-unlock" type="button" class="primary">UNLOCK WITH FACE</button>
+            <span id="face-led" class="led">● LOCKED</span>
+          </div>
+          <div class="controls">
+            <button id="face-testshot" type="button" class="secondary">TEST SNAPSHOT</button>
+          </div>
+          <div id="face-status" class="result"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALWAYS-ON VOICE -->
+    <section class="card fx">
+      <h2 class="title-cursive">ALWAYS-ON VOICE</h2>
+      <p class="muted">SAY <b>“HEY &lt;AI NAME&gt;”</b> OR USE A <b>CLAP</b> SOUND. ONLY THE OWNER CAN EXECUTE COMMANDS.</p>
+
+      <div class="grid">
+        <label>AI NAME
+          <input id="agent-name" type="text" value="ELORA" />
+        </label>
+        <label>ACTIVATION MODE
+          <select id="activation-mode">
+            <option value="phrase">Wake phrase only</option>
+            <option value="clap">Clap only</option>
+            <option value="both" selected>Both (phrase + clap)</option>
+          </select>
+        </label>
+        <label>OWNER-ONLY EXECUTION
+          <select id="owner-enforce">
+            <option value="on" selected>On (recommended)</option>
+            <option value="off">Off (demo)</option>
+          </select>
+        </label>
+        <label>MICROPHONE
+          <select id="mic-select"></select>
+        </label>
+        <!-- NEW: Mic Mode -->
+        <label>MIC MODE
+          <select id="mic-mode">
+            <option value="near" selected>Raw (near)</option>
+            <option value="far">Far-Field (speaker)</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="controls">
+        <button id="mic-permission" type="button">GRANT MIC ACCESS</button>
+        <button id="voice-start" type="button" disabled>START ALWAYS-ON</button>
+        <button id="voice-stop" type="button" class="secondary">STOP</button>
+        <span id="voice-led" class="led">● IDLE</span>
+      </div>
+
+      <div class="controls">
+        <button id="sr-test" type="button" class="secondary">TEST RECOGNITION (ONE-SHOT)</button>
+        <div class="mic-meter"><div id="mic-bar"></div></div>
+      </div>
+
+      <div class="subgrid">
+        <div>
+          <h3 class="title-cursive" style="margin-top:8px;">TRAIN YOUR VOICE (OWNER)</h3>
+          <p class="muted small">CLICK RECORD AND SPEAK ~10 SECONDS IN DIFFERENT TONES (NEUTRAL / FEVER / HAPPY / QUIET).</p>
+          <div class="controls">
+            <input id="enroll-tag" placeholder="condition tag (e.g., neutral/fever/happy/quiet)" />
+            <button id="enroll-start" type="button">RECORD 10S</button>
+            <button id="enroll-clear" type="button" class="secondary">CLEAR PROFILE</button>
+          </div>
+          <div id="enroll-status" class="result"></div>
+        </div>
+        <div>
+          <h3 class="title-cursive" style="margin-top:8px;">LIVE DIAGNOSTICS</h3>
+          <div id="diag" class="diag">
+            <div>WAKE: <code id="wake-status">–</code></div>
+            <div>OWNER CHECK: <code id="owner-status">–</code></div>
+            <div>MOOD: <code id="mood-status">–</code></div>
+            <div>HEALTH: <code id="health-status">–</code></div>
+            <div>PITCH: <code id="pitch-status">–</code> HZ</div>
+            <div>VOLUME: <code id="vol-status">–</code></div>
+            <div>SNR: <code id="snr-status">–</code> dB</div>
+            <div>MATCHED PROFILE: <code id="profile-status">–</code></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result" id="voice-status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    window.API_BASE = 'http://127.0.0.1:8000';
+    window.GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com';
+  </script>
+  <script src="./app.js?v=farfield-1" defer></script>
+</body>
+</html>
